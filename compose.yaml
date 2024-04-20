@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: russo-corp-cloudflared
+    command: tunnel --no-autoupdate run --token ${CF_TOKEN}
+    env_file:
+      - .env
+
+  backend:
+    container_name: russo-corp-backend
+    build:
+      context: ./backend
+      args:
+        - BACKEND_PORT=${BACKEND_PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    container_name: russo-corp-frontend
+    build:
+      context: ./frontend
+    env_file:
+        - .env
+    volumes:
+        - ./frontend:/app
+
+networks:
+  default:
+    name: russo-corm-network
