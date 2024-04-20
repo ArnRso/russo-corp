@@ -1,2 +1,2 @@
 #!/bin/sh
-npm install && npm run dev
+npm install && node migrate.js && npm run dev
