@@ -1,5 +1,5 @@
 const helloWorld = (req, res) => {
-    res.send("Hello, World!");
+    res.send({message: "Hello, World!"});
 }
 
 module.exports = {
