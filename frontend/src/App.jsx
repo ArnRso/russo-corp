@@ -2,13 +2,20 @@ import './App.css'
 import {useEffect, useState} from "react";
 
 function App() {
-    const [helloMessage, setHelloMessage] = useState('');
+    const [helloMessages, setHelloMessages] = useState([]);
     useEffect(() => {
         fetch(import.meta.env.VITE_BACKEND_URL + '/hello-world')
             .then(response => response.json())
-            .then(data => setHelloMessage(data.message))
+            .then(data => setHelloMessages(data))
     }, []);
-    return <h1>{helloMessage}</h1>
+
+    return (
+        <ul>
+            {helloMessages.map((message, index) => (
+                <li key={index}>{message.message}</li>
+            ))}
+        </ul>
+    )
 }
 
 export default App

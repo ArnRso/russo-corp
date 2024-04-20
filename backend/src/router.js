@@ -1,7 +1,7 @@
 const express = require("express");
-const {helloWorld} = require("./controller/helloWorldController");
 const router = express.Router();
+const controllers = require("./controller");
 
-router.get('/hello-world', helloWorld)
+router.get('/hello-world', controllers.helloWorld.helloWorld)
 
 module.exports = router;
