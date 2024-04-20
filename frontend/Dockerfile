@@ -1,14 +1,12 @@
 FROM node:20-alpine
 RUN apk add --no-cache libc6-compat
 
-EXPOSE 80
 WORKDIR /app
-COPY --link ./package.json .
+
+COPY ./package.json .
 RUN npm install
 
-VOLUME /app/node_modules
+EXPOSE 80
 
 COPY docker-entry.sh .
-
 CMD ["sh","./docker-entry.sh"]
-
