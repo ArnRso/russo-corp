@@ -18,6 +18,9 @@ services:
       - .env
     volumes:
       - ./backend:/app
+    depends_on:
+      - cloudflared
+      - db
 
   frontend:
     container_name: russo-corp-frontend
@@ -27,6 +30,33 @@ services:
         - .env
     volumes:
         - ./frontend:/app
+    depends_on:
+      - backend
+
+  db:
+    image: mariadb:10.6.14
+    restart: on-failure
+    container_name: russo-corp-db
+    volumes:
+      - './database:/var/lib/mysql'
+      - './backend/database:/docker-entrypoint-initdb.d'
+    env_file:
+      - .env
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    command: 'mysqld --sql_mode=""'
+    depends_on:
+      - cloudflared
+
+#  adminer:
+#    image: adminer
+#    container_name: russo-corp-adminer
+#    restart: always
+#    ports:
+#      - 8080:8080
 
 networks:
   default:
